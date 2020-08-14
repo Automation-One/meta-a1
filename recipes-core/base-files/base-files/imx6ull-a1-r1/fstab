@@ -1,0 +1,4 @@
+ubi0:boot            /boot                ubifs      defaults              0  2
+tmpfs                /var/volatile        tmpfs      defaults              0  0
+tmpfs                /tmp                 tmpfs      rw,nosuid,noatime,nodev,size=768M,mode=1777 0 0
+ubi0:data            /data                ubifs      defaults              0  2
