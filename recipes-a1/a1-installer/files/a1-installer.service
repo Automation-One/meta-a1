@@ -1,0 +1,14 @@
+[Unit]
+Description=Automation One NAND Installer
+Before=serial-getty@ttymxc3.service
+Wants=serial-getty@ttymxc3.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/a1-installer
+StandardOutput=tty
+TTYPath=/dev/ttymxc3
+
+[Install]
+WantedBy=multi-user.target

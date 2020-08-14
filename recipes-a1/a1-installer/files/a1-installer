@@ -1,0 +1,38 @@
+#!/bin/sh
+# -*- shell-script -*-
+
+info() {
+    echo "INFO: $@"
+}
+
+error() {
+    echo "ERROR: $@"
+    echo none > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
+    echo 0 > /sys/devices/soc0/gpio-leds/leds/debug-led2/brightness
+    exit 1
+}
+
+warn() {
+    echo "WARN: $@"
+}
+
+SPL="/installer-data/@SPL_BINARY@"
+UBOOT="/installer-data/@UBOOT_BINARY@"
+ROOTFS="/installer-data/rootfs.ubi"
+
+echo timer > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
+
+info "Programming U-Boot in SPI NOR"
+flash_erase -q /dev/mtd1 0 0 || error "Failed to erase /dev/mtd1"
+dd if=$SPL of=/dev/mtdblock1 bs=1k seek=1 || error "Failed to write SPL"
+dd if=$UBOOT of=/dev/mtdblock1 bs=1k seek=64 || error "Failed to write u-boot.img"
+
+info "Programming rootfs UBI image"
+flash_erase -q /dev/mtd0 0 0 || error "Failed to erase /dev/mtd0"
+ubiformat -q /dev/mtd0 -f "$ROOTFS" || error "Failed to write the rootfs image"
+
+echo none > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
+echo 1 > /sys/devices/soc0/gpio-leds/leds/debug-led2/brightness
+
+info "Installation SUCCESS: stopping"
+sync
