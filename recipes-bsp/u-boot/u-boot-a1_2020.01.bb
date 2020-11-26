@@ -14,7 +14,7 @@ SRC_URI = "\
     file://fw_env.config \
 "
 
-SRCREV = "8b7fcf4c4a833104e5ede7a902f4aba0685993fe"
+SRCREV = "60f2c1fbf7b1855a03f9ead503b3fe6a9c074015"
 SRCBRANCH = "2020.01+a1"
 LOCALVERSION = "-a1"
 
