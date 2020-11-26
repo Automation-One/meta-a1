@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkdir -p /data/var/lib/NetworkManager
+mkdir -p /data/etc/NetworkManager/system-connections
