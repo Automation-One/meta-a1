@@ -21,6 +21,7 @@ do_install() {
 
 RDEPENDS_${PN} += "\
     curl \
+    libgpiod-tools \
     mtd-utils \
     mtd-utils-ubifs \
 "

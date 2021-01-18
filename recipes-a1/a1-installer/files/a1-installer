@@ -6,9 +6,10 @@ info() {
 }
 
 error() {
+    stop_activity
+
     echo "ERROR: $@"
-    echo none > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
-    echo 0 > /sys/devices/soc0/gpio-leds/leds/debug-led2/brightness
+    gpioset 4 3=0
     exit 1
 }
 
@@ -16,11 +17,39 @@ warn() {
     echo "WARN: $@"
 }
 
+stop_activity() {
+    touch /tmp/stop-installer
+    while [ -e /tmp/stop-installer ]; do
+        sleep 0.1
+    done
+}
+
+show_activity() {
+    while [ ! -e /tmp/stop-installer ]; do
+        gpioset --mode=time --usec=500000 4 3=1
+        gpioset --mode=time --usec=500000 4 3=0
+    done
+
+    rm /tmp/stop-installer
+}
+
 SPL="/installer-data/@SPL_BINARY@"
 UBOOT="/installer-data/@UBOOT_BINARY@"
 ROOTFS="/installer-data/rootfs.ubi"
 
-echo timer > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
+# Disable modem. We don't need a working mode in the installer process
+gpioset 0 30=0
+gpioset 0 31=0
+
+show_activity &
+
+# Sometimes the spi device probe is delayed, wait for /dev/mtd1 device
+# before start the installer process
+count=0
+while [ ! -e /dev/mtd1 ] && [  $count -lt 30 ]; do
+    sleep 1
+    let count=count+1
+done
 
 info "Programming U-Boot in SPI NOR"
 flash_erase -q /dev/mtd1 0 0 || error "Failed to erase /dev/mtd1"
@@ -31,8 +60,8 @@ info "Programming rootfs UBI image"
 flash_erase -q /dev/mtd0 0 0 || error "Failed to erase /dev/mtd0"
 ubiformat -q /dev/mtd0 -f "$ROOTFS" || error "Failed to write the rootfs image"
 
-echo none > /sys/devices/soc0/gpio-leds/leds/debug-led2/trigger
-echo 1 > /sys/devices/soc0/gpio-leds/leds/debug-led2/brightness
-
 info "Installation SUCCESS: stopping"
 sync
+
+stop_activity
+gpioset 4 3=1
