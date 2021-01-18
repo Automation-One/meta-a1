@@ -13,7 +13,6 @@ DEPENDS += "lzop-native bc-native"
 
 SRC_URI = "\
     git://github.com/Automation-One/${BPN}.git;protocol=https;branch=${SRCBRANCH} \
-    file://defconfig \
 "
 
 LOCALVERSION = "-a1"
