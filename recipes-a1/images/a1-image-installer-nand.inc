@@ -25,4 +25,4 @@ copy_uboot_file() {
     cp ${DEPLOY_DIR_IMAGE}/${UBOOT_BINARY} $dest/${UBOOT_BINARY}
 }
 
-ROOTFS_POSTPROCESS_COMMAND = "remove_fstab; copy_uboot_file; copy_a1_image_files; "
+ROOTFS_POSTPROCESS_COMMAND += "remove_fstab; copy_uboot_file; copy_a1_image_files; "
