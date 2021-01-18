@@ -5,9 +5,6 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 # Avoid installation of syslog
 BAD_RECOMMENDATIONS += "busybox-syslog"
 
-# Avoid static /dev
-USE_DEVFS = "1"
-
 inherit core-image
 
 CORE_IMAGE_EXTRA_INSTALL = "\
