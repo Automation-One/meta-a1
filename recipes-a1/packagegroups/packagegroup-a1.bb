@@ -13,4 +13,5 @@ PACKAGES = "\
 RDEPENDS_packagegroup-a1-networking = "\
     modemmanager \
     networkmanager \
+    networkmanager-nmcli \
 "
