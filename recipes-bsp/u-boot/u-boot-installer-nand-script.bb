@@ -12,8 +12,8 @@ do_generate_bootscript() {
 setenv bootargs ''
 
 load mmc 0:2 \${loadaddr} /boot/fitImage;
-imxtract \${loadaddr} fdt@imx6ull-a1-gw.dtb \${fdt_addr_r};
-imxtract \${loadaddr} kernel@1 \${kernel_addr_r};
+imxtract \${loadaddr} fdt-imx6ull-a1-gw.dtb \${fdt_addr_r};
+imxtract \${loadaddr} kernel-1 \${kernel_addr_r};
 
 setenv bootargs console=ttymxc3,115200 root=/dev/mmcblk0p2 rootwait rw quiet
 
