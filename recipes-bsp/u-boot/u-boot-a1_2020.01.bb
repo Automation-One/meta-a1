@@ -12,6 +12,7 @@ DEPENDS += "bison-native bc-native dtc-native lzop-native"
 SRC_URI = "\
     git://github.com/Automation-One/${BPN}.git;protocol=https;branch=${SRCBRANCH} \
     file://fw_env.config \
+    file://0001-Boot-Fix.patch \
 "
 
 SRCREV = "92959a3f4f27ac275b9fe75f66579001de13b3fd"

@@ -1,0 +1,43 @@
+From af389e5619dfbe1d13e9419ded1998edad8743b8 Mon Sep 17 00:00:00 2001
+From: Boerge S <boerge.struempfel@gmail.com>
+Date: Tue, 19 Oct 2021 16:21:56 +0200
+Subject: [PATCH] Modified spl.c in order to allow booting, when unbootable sd
+ card is inserted.
+
+---
+ board/kontron/imx/mx6ul/spl.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/board/kontron/imx/mx6ul/spl.c b/board/kontron/imx/mx6ul/spl.c
+index 14c7e9b3b7..f3ad42aa3d 100644
+--- a/board/kontron/imx/mx6ul/spl.c
++++ b/board/kontron/imx/mx6ul/spl.c
+@@ -347,24 +347,7 @@ void board_init_f(ulong dummy)
+ 
+ void board_boot_order(u32 *spl_boot_list)
+ {
+-	u32 bootdev = spl_boot_device();
+-
+-	/*
+-	 * The default boot fuse settings use the SD card (MMC1) as primary
+-	 * boot device, but allow SPI NOR as a fallback boot device.
+-	 * We can't detect the fallback case and spl_boot_device() will return
+-	 * BOOT_DEVICE_MMC1 despite the actual boot device beeing SPI NOR.
+-	 * Therefore we try to load U-Boot proper vom SPI NOR after loading
+-	 * from MMC has failed.
+-	 */
+-	spl_boot_list[0] = bootdev;
+-
+-	switch (bootdev) {
+-	case BOOT_DEVICE_MMC1:
+-	case BOOT_DEVICE_MMC2:
+-		spl_boot_list[1] = BOOT_DEVICE_SPI;
+-		break;
+-	}
++	spl_boot_list[0] = BOOT_DEVICE_SPI;
+ }
+ 
+ int board_early_init_f(void)
+-- 
+2.25.1
+
