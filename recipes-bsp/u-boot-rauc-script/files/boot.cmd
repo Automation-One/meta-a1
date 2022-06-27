@@ -1,6 +1,7 @@
 test -n "${BOOT_ORDER}" || setenv BOOT_ORDER "A B"
 test -n "${BOOT_A_LEFT}" || setenv BOOT_A_LEFT 3
 test -n "${BOOT_B_LEFT}" || setenv BOOT_B_LEFT 3
+test -n "${additional_boot_args}" || setenv additional_boot_args "quiet"
 
 
  
@@ -17,14 +18,14 @@ for BOOT_SLOT in "${BOOT_ORDER}"; do
       echo "Found valid slot A, ${BOOT_A_LEFT} attempts remaining"
       setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1
       run find_root_a
-      setenv bootargs "console=ttymxc3,115200 ubi.mtd=0 root=${ubiroot} rootfstype=ubifs rw quiet imx2-wdt.timeout=60 imx2-wdt.nowayout panic=60 rauc.slot=A"
+      setenv bootargs "console=ttymxc3,115200 ubi.mtd=0 root=${ubiroot} rootfstype=ubifs rw imx2-wdt.timeout=60 imx2-wdt.nowayout panic=60 rauc.slot=A ${additional_boot_args}"
     fi
   elif test "x${BOOT_SLOT}" = "xB"; then
     if test ${BOOT_B_LEFT} -gt 0; then
       echo "Found valid slot B, ${BOOT_B_LEFT} attempts remaining"
       setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1
       run find_root_b
-      setenv bootargs "console=ttymxc3,115200 ubi.mtd=0 root=${ubiroot} rootfstype=ubifs rw quiet imx2-wdt.timeout=60 imx2-wdt.nowayout panic=60 rauc.slot=B"
+      setenv bootargs "console=ttymxc3,115200 ubi.mtd=0 root=${ubiroot} rootfstype=ubifs rw imx2-wdt.timeout=60 imx2-wdt.nowayout panic=60 rauc.slot=B ${additional_boot_args}"
     fi
   fi
 done
