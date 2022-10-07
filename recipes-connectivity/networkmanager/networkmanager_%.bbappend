@@ -1,1 +1,1 @@
-PACKAGECONFIG_append = " ppp"
+PACKAGECONFIG_append = " ppp modemmanager bluez5 dnsmasq wifi ifupdown"
