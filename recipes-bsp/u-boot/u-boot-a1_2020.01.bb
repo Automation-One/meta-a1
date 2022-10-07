@@ -9,11 +9,10 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=30503fd321432fc713238f582193b78e"
 
 DEPENDS += "bison-native bc-native dtc-native lzop-native"
 
-SRC_URI = "\
-    git://github.com/Automation-One/${BPN}.git;protocol=https;branch=${SRCBRANCH} \
-    file://fw_env.config \
-    file://0001-Boot-Fix.patch \
-"
+SRC_URI = "git://github.com/Automation-One/${BPN}.git;protocol=https;branch=${SRCBRANCH} \
+           file://fw_env.config \
+           file://0001-Added-crc-check-to-mmc_load_legacy-in-order-to-avoid.patch \
+           "
 
 SRCREV = "92959a3f4f27ac275b9fe75f66579001de13b3fd"
 SRCBRANCH = "2020.01+a1"

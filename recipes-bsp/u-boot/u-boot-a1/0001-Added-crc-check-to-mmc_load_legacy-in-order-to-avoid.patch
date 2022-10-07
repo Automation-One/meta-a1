@@ -1,0 +1,35 @@
+From e8fad16c9857b18ef69acef3813c68bd6cb0ece3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?B=C3=B6rge=20Str=C3=BCmpfel?= <boerge.struempfel@gmail.com>
+Date: Fri, 7 Oct 2022 14:18:04 +0200
+Subject: [PATCH] Added crc check to mmc_load_legacy in order to avoid locks
+
+If there is an mmc-medium without a suitable bootable image, return an
+error code for this device. Therefore the next medium according to the
+boot_order is tryied. This avoids, that the device is not properly
+booting if an empty/non-bootable sd card is inserted.
+---
+ common/spl/spl_mmc.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/common/spl/spl_mmc.c b/common/spl/spl_mmc.c
+index 2ede096e61..6038f22d66 100644
+--- a/common/spl/spl_mmc.c
++++ b/common/spl/spl_mmc.c
+@@ -38,6 +38,17 @@ static int mmc_load_legacy(struct spl_image_info *spl_image, struct mmc *mmc,
+ 	if (count != image_size_sectors)
+ 		return -EIO;
+ 
++	if( image_check_hcrc((image_header_t *)spl_image->load_addr) != 1)
++	{
++		debug("Image hcrc check failed\n");
++		return -1;
++	}
++	if( image_check_dcrc((image_header_t *)spl_image->load_addr) != 1)
++	{
++		debug("Image dcrc check failed\n");
++		return -1;
++	}
++
+ 	return 0;
+ }
+ 
