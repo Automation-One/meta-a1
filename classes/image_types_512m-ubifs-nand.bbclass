@@ -18,7 +18,7 @@ vol_flags=autoresize
 mode=ubi
 image=${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ubifs
 vol_id=1
-vol_size=115MiB
+vol_size=150MiB
 vol_type=dynamic
 vol_name=system_a
 
@@ -26,7 +26,7 @@ vol_name=system_a
 mode=ubi
 image=${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ubifs
 vol_id=2
-vol_size=115MiB
+vol_size=150MiB
 vol_type=dynamic
 vol_name=system_b
 
@@ -34,7 +34,7 @@ vol_name=system_b
 mode=ubi
 image=${WORKDIR}/data.ubifs
 vol_id=3
-vol_size=250MiB
+vol_size=180MiB
 vol_type=dynamic
 vol_name=data
 EOF
